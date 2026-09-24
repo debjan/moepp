@@ -13,7 +13,7 @@ This pipeline fetches air quality measurements (PM10, SO2, PM25, O3, NO2, CO) fr
 - Client-side validation of regions, stations, and parameters
 - DuckLake destination (native `dlt.destinations.ducklake`) with merge/upsert deduplication
 - Gap-tolerant incremental fetching (each run loads last-loaded-date → yesterday)
-- Daily scheduled runs via GitHub Actions (single-writer concurrency group)
+- Daily scheduled CI/CD runs
 - Catalog-as-file lifecycle (download → load → upload-on-success; failed runs never publish)
 - CLI interface for easy usage
 - NULL value handling and type conversions
@@ -122,7 +122,6 @@ moepp/
 │       ├── constants.py    # API constants
 │       └── settings.py     # Settings (incl. R2/DuckLake helpers)
 ├── rill-air-quality/       # Rill dashboards (models, dashboards)
-├── .github/workflows/      # Daily DuckLake ingest (moepp-ducklake.yml)
 ├── pyproject.toml          # Package configuration
 └── README.md               # This file
 ```
@@ -131,11 +130,11 @@ moepp/
 
 ### DuckLake on Cloudflare R2 (primary)
 
-Parquet data files plus a DuckDB-file catalog (`ducklake/metadata.ducklake`), both in the public-read `moepp-ducklake` bucket. The GitHub Actions workflow (`moepp-ducklake.yml`, daily 02:00 UTC, `concurrency: moepp-pipeline`) is the sole writer: it downloads the catalog, loads `last-loaded-date → yesterday`, and uploads the catalog back only on success. Missed days self-heal on the next run; merge on `(date, station_name_mk, station_name_en)` dedupes overlaps.
+Parquet data files plus a DuckDB-file catalog (`ducklake/metadata.ducklake`), both in the public-read `moepp-ducklake` bucket.
 
 - **Table**: `moepp_ducklake.main.measurements`
 - **Primary keys**: `date`, `station_name_mk`, `station_name_en`
-- **Writer secrets** (GitHub Actions only): `MOEPP_R2_KEY_ID`, `MOEPP_R2_SECRET`, `MOEPP_R2_ACCOUNT_ID`, `MOEPP_R2_BUCKET`
+- **Environment Variables**: `MOEPP_R2_KEY_ID`, `MOEPP_R2_SECRET`, `MOEPP_R2_ACCOUNT_ID`, `MOEPP_R2_BUCKET`
 
 ```bash
 # DuckLake storage
@@ -156,11 +155,11 @@ uv run python run.py --destination duckdb
 
 ## Environment Variables
 
-| Variable                                                                          | Needed by                                   | Purpose                                          |
-| --------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
-| `MOEPP_R2_KEY_ID` / `MOEPP_R2_SECRET` / `MOEPP_R2_ACCOUNT_ID` / `MOEPP_R2_BUCKET` | Writer (GitHub Actions secrets)             | R2 read/write for catalog + data                 |
-| `MOEPP_OUTPUT_DB`                                                                 | Local DuckDB runs                           | Output file path (default: `moepp.duckdb`)       |
-| `MOEPP_LOG_LEVEL`                                                                 | All runs                                    | Logging level (default: `INFO`)                  |
+| Variable                                                                          | Needed by         | Purpose                                    |
+| --------------------------------------------------------------------------------- | ----------------- | ------------------------------------------ |
+| `MOEPP_R2_KEY_ID` / `MOEPP_R2_SECRET` / `MOEPP_R2_ACCOUNT_ID` / `MOEPP_R2_BUCKET` | Ducklake          | R2 read/write for catalog + data           |
+| `MOEPP_OUTPUT_DB`                                                                 | Local DuckDB runs | Output file path (default: `moepp.duckdb`) |
+| `MOEPP_LOG_LEVEL`                                                                 | All runs          | Logging level (default: `INFO`)            |
 
 ## License
 
