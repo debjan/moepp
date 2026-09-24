@@ -159,7 +159,6 @@ uv run python run.py --destination duckdb
 | Variable                                                                          | Needed by                                   | Purpose                                          |
 | --------------------------------------------------------------------------------- | ------------------------------------------- | ------------------------------------------------ |
 | `MOEPP_R2_KEY_ID` / `MOEPP_R2_SECRET` / `MOEPP_R2_ACCOUNT_ID` / `MOEPP_R2_BUCKET` | Writer (GitHub Actions secrets)             | R2 read/write for catalog + data                 |
-| `MOEPP_R2_PUBLIC_BASE_URL`                                                        | Local catalog workflows (`sync_catalog.py`) | Public bucket URL, e.g. `https://pub-xxx.r2.dev` |
 | `MOEPP_OUTPUT_DB`                                                                 | Local DuckDB runs                           | Output file path (default: `moepp.duckdb`)       |
 | `MOEPP_LOG_LEVEL`                                                                 | All runs                                    | Logging level (default: `INFO`)                  |
 
