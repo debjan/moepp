@@ -1,0 +1,61 @@
+# Station Comparison Dashboard
+# Compare air quality across different monitoring stations
+# Uses daily_avg_metrics view for daily aggregated data
+
+type: explore
+title: Station Comparison
+description: Compare air quality across 22 monitoring stations with leaderboards, side-by-side comparison, and data completeness indicators
+metrics_view: daily_avg_metrics
+
+# Explicit measures for station comparison
+measures:
+  # PM10 metrics - primary for ranking
+  - avg_pm10
+  - min_pm10
+  - max_pm10
+  # PM2.5 metrics
+  - avg_pm25
+  - min_pm25
+  - max_pm25
+  # Other pollutants
+  - avg_no2
+  - min_no2
+  - max_no2
+  - avg_so2
+  - min_so2
+  - max_so2
+  - avg_co
+  - min_co
+  - max_co
+  - avg_o3
+  - min_o3
+  - max_o3
+  # Data quality metrics
+  - data_completeness
+  - record_count
+
+# Explicit dimensions
+dimensions:
+  - station              # Station name filter
+  - region               # Geographic region filter (1, 2, 3)
+  - day                  # Date filter
+  - incomplete_data      # Flag for incomplete data days
+
+# Time range presets
+time_ranges:
+  - P7D                  # Last week
+  - P30D                 # Last month
+  - P90D                 # Last quarter
+  - P1Y                  # Last year
+  - P5Y                  # Last 5 years
+
+# Default view - show PM10 averages by region
+defaults:
+  measures:
+    - avg_pm10
+    - max_pm10
+    - data_completeness
+  dimensions:
+    - region
+    - station
+  time_range: P3M

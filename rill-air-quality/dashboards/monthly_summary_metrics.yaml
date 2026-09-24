@@ -1,0 +1,84 @@
+# Monthly Summary Metrics View
+# Provides monthly aggregated metrics with YoY for trends dashboard
+
+version: 1
+type: metrics_view
+title: Monthly Summary Metrics
+model: monthly_summary
+
+timeseries: month
+smallest_time_grain: month
+
+measures:
+  - name: avg_pm10
+    display_name: Monthly Avg PM10
+    expression: AVG(avg_pm10)
+    format_preset: humanize
+
+  - name: avg_pm25
+    display_name: Monthly Avg PM2.5
+    expression: AVG(avg_pm25)
+    format_preset: humanize
+
+  - name: avg_no2
+    display_name: Monthly Avg NO2
+    expression: AVG(avg_no2)
+    format_preset: humanize
+
+  - name: avg_so2
+    display_name: Monthly Avg SO2
+    expression: AVG(avg_so2)
+    format_preset: humanize
+
+  - name: avg_co
+    display_name: Monthly Avg CO
+    expression: AVG(avg_co)
+    format_preset: humanize
+
+  - name: avg_o3
+    display_name: Monthly Avg O3
+    expression: AVG(avg_o3)
+    format_preset: humanize
+
+  - name: max_pm10
+    display_name: Max PM10
+    expression: MAX(max_pm10)
+    format_preset: humanize
+
+  - name: max_pm25
+    display_name: Max PM2.5
+    expression: MAX(max_pm25)
+    format_preset: humanize
+
+  - name: stddev_pm10
+    display_name: StdDev PM10
+    expression: AVG(stddev_pm10)
+    format_preset: humanize
+
+  - name: stddev_pm25
+    display_name: StdDev PM2.5
+    expression: AVG(stddev_pm25)
+    format_preset: humanize
+
+  - name: pm10_completeness
+    display_name: PM10 Data Completeness
+    expression: AVG(pm10_completeness_pct)
+    format_preset: percentage
+
+  - name: total_records
+    display_name: Total Records
+    expression: SUM(total_records)
+    format_preset: humanize
+
+dimensions:
+  - name: year
+    display_name: Year
+    column: year
+
+  - name: month_num
+    display_name: Month
+    column: month_num
+
+  - name: station
+    display_name: Station
+    column: station_name_en

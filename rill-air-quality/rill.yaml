@@ -1,0 +1,11 @@
+display_name: MOEPP Air Quality Analytics
+
+# Use DuckDB for OLAP (can execute models and materialize tables)
+olap_connector: duckdb
+
+# Model refresh configuration
+models:
+  materialize: true
+  refresh:
+    cron: "0 * * * *"
+    run_in_dev: true

@@ -1,0 +1,47 @@
+# Air Quality Overview Dashboard
+# Main dashboard showing time-series trends and current air quality status
+# Uses air_quality_metrics view for real-time and historical data
+
+type: explore
+title: Air Quality Overview
+description: Real-time air quality monitoring with current values, 24h averages, and time-series visualization for all pollutants
+metrics_view: air_quality_metrics
+
+# Explicit measure selection with pollutant toggle support
+measures:
+  - current_pm10      # Current value
+  - avg_pm10_24h      # 24h rolling average
+  - avg_pm10          # Time range average
+  - current_pm25
+  - avg_pm25_24h
+  - avg_pm25
+  - current_no2
+  - avg_no2
+  - current_so2
+  - avg_so2
+  - current_co
+  - avg_co
+  - current_o3
+  - avg_o3
+
+# Explicit dimension selection
+dimensions:
+  - station          # Multi-select station filter
+
+# Time range presets for quick filtering
+time_ranges:
+  - PT6H             # Last 6 hours
+  - P1D              # Last 24 hours
+  - P7D              # Last 7 days
+  - P30D             # Last 30 days
+
+# Default view settings
+defaults:
+  measures:
+    - current_pm10
+    - avg_pm10_24h
+    - current_pm25
+    - avg_pm25_24h
+  dimensions:
+    - station
+  time_range: P7D   # Default to last 24 hours

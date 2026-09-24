@@ -1,0 +1,85 @@
+# Anomaly Detection Metrics View
+# Provides anomaly detection metrics for trend analysis dashboard
+# Identifies values exceeding 2 standard deviations from monthly baseline
+
+version: 1
+type: metrics_view
+title: Anomaly Detection
+model: anomalies
+
+timeseries: day
+smallest_time_grain: day
+
+measures:
+  # Anomaly counts by pollutant
+  - name: pm10_anomaly_count
+    display_name: PM10 Anomalies
+    expression: "COUNT(CASE WHEN pm10_anomaly THEN 1 END)"
+    format_preset: humanize
+
+  - name: pm25_anomaly_count
+    display_name: PM2.5 Anomalies
+    expression: "COUNT(CASE WHEN pm25_anomaly THEN 1 END)"
+    format_preset: humanize
+
+  - name: no2_anomaly_count
+    display_name: NO2 Anomalies
+    expression: "COUNT(CASE WHEN no2_anomaly THEN 1 END)"
+    format_preset: humanize
+
+  - name: total_anomalies
+    display_name: Total Anomaly Days
+    expression: "COUNT(CASE WHEN has_anomaly THEN 1 END)"
+    format_preset: humanize
+
+  # Average z-scores
+  - name: avg_pm10_zscore
+    display_name: Avg PM10 Z-Score
+    expression: AVG(ABS(pm10_zscore))
+    format_preset: humanize
+
+  - name: avg_pm25_zscore
+    display_name: Avg PM2.5 Z-Score
+    expression: AVG(ABS(pm25_zscore))
+    format_preset: humanize
+
+  - name: max_zscore_recorded
+    display_name: Max Z-Score
+    expression: MAX(max_zscore)
+    format_preset: humanize
+
+  # Percentage metrics
+  - name: anomaly_rate
+    display_name: Anomaly Rate %
+    expression: "COUNT(CASE WHEN has_anomaly THEN 1 END) * 100.0 / COUNT(*)"
+    format_preset: percentage
+
+  - name: high_severity_rate
+    display_name: High Severity %
+    expression: "COUNT(CASE WHEN anomaly_severity = 'High' THEN 1 END) * 100.0 / COUNT(*)"
+    format_preset: percentage
+
+dimensions:
+  - name: station
+    display_name: Station
+    column: station_name_en
+
+  - name: year
+    display_name: Year
+    column: year
+
+  - name: month
+    display_name: Month
+    column: month
+
+  - name: has_anomaly
+    display_name: Has Anomaly
+    column: has_anomaly
+
+  - name: anomaly_severity
+    display_name: Severity
+    column: anomaly_severity
+
+  - name: primary_pollutant
+    display_name: Primary Pollutant
+    column: primary_anomalous_pollutant

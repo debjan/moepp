@@ -1,0 +1,76 @@
+# Air Quality Index (AQI) Metrics View
+# Provides AQI categorization and health advisory metrics
+# Based on WHO/EU air quality standards
+
+version: 1
+type: metrics_view
+title: Air Quality Index
+model: air_quality_index
+
+timeseries: date
+smallest_time_grain: hour
+
+measures:
+  # Generic count for distribution charts
+  - name: total_count
+    display_name: Total Count
+    expression: "COUNT(*)"
+    format_preset: humanize
+
+  # AQI distribution counts
+  - name: good_days_count
+    display_name: Good Days
+    expression: "COUNT(CASE WHEN overall_aqi_category = 'Good' THEN 1 END)"
+    format_preset: humanize
+
+  - name: fair_days_count
+    display_name: Fair Days
+    expression: "COUNT(CASE WHEN overall_aqi_category = 'Fair' THEN 1 END)"
+    format_preset: humanize
+
+  - name: moderate_days_count
+    display_name: Moderate Days
+    expression: "COUNT(CASE WHEN overall_aqi_category = 'Moderate' THEN 1 END)"
+    format_preset: humanize
+
+  - name: poor_days_count
+    display_name: Poor Days
+    expression: "COUNT(CASE WHEN overall_aqi_category = 'Poor' THEN 1 END)"
+    format_preset: humanize
+
+  - name: very_poor_days_count
+    display_name: Very Poor Days
+    expression: "COUNT(CASE WHEN overall_aqi_category = 'Very Poor' THEN 1 END)"
+    format_preset: humanize
+
+  # Percentage distributions
+  - name: good_days_pct
+    display_name: Good Days %
+    expression: "COUNT(CASE WHEN overall_aqi_category = 'Good' THEN 1 END) * 100.0 / COUNT(*)"
+    format_preset: percentage
+
+  - name: poor_or_worse_pct
+    display_name: Poor or Worse %
+    expression: "COUNT(CASE WHEN overall_aqi_category IN ('Poor', 'Very Poor') THEN 1 END) * 100.0 / COUNT(*)"
+    format_preset: percentage
+
+dimensions:
+  - name: station
+    display_name: Station
+    column: station_name_en
+
+  - name: aqi_category
+    display_name: AQI Category
+    column: overall_aqi_category
+
+  - name: dominant_pollutant
+    display_name: Dominant Pollutant
+    column: dominant_pollutant
+
+  - name: date
+    display_name: Date
+    column: date
+
+  - name: health_advisory
+    display_name: Health Advisory
+    column: health_advisory

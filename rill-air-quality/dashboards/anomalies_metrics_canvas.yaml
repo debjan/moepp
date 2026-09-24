@@ -1,0 +1,145 @@
+type: canvas
+display_name: "Anomaly Monitoring"
+
+defaults:
+  time_range: P30D
+  comparison_mode: time
+
+filters:
+  enable: true
+  pinned:
+    - station
+    - anomaly_severity
+    - primary_pollutant
+
+time_ranges:
+  - P7D
+  - P30D
+  - P90D
+  - inf
+
+rows:
+  - height: 72px
+    items:
+      - width: 12
+        markdown:
+          content: |
+            # Anomaly Monitoring
+
+            Track anomaly volume, rates, and severity across stations and pollutants.
+
+  - height: 200px
+    items:
+      - width: 12
+        kpi_grid:
+          metrics_view: anomalies_metrics
+          measures:
+            - total_anomalies
+            - anomaly_rate
+            - high_severity_rate
+            - max_zscore_recorded
+          comparison:
+            - delta
+            - percent_change
+            - previous
+          sparkline: right
+
+  - height: 380px
+    items:
+      - width: 6
+        line_chart:
+          metrics_view: anomalies_metrics
+          title: "Total anomalies (daily)"
+          color: primary
+          x:
+            field: day
+            type: temporal
+          y:
+            field: total_anomalies
+            type: quantitative
+            zeroBasedOrigin: true
+      - width: 6
+        line_chart:
+          metrics_view: anomalies_metrics
+          title: "Anomaly rate (daily)"
+          color: secondary
+          x:
+            field: day
+            type: temporal
+          y:
+            field: anomaly_rate
+            type: quantitative
+            zeroBasedOrigin: true
+
+  - height: 380px
+    items:
+      - width: 6
+        bar_chart:
+          metrics_view: anomalies_metrics
+          title: "Top stations by total anomalies"
+          dimension_filters: has_anomaly IN (true)
+          x:
+            field: station
+            type: nominal
+            limit: 10
+            sort: -y
+            labelAngle: -20
+          y:
+            field: total_anomalies
+            type: quantitative
+            zeroBasedOrigin: true
+      - width: 6
+        donut_chart:
+          metrics_view: anomalies_metrics
+          title: "Anomalies by primary pollutant"
+          dimension_filters: has_anomaly IN (true)
+          innerRadius: 55
+          color:
+            field: primary_pollutant
+            type: nominal
+            limit: 8
+            sort: -measure
+          measure:
+            field: total_anomalies
+            type: quantitative
+            showTotal: true
+
+  - height: 380px
+    items:
+      - width: 12
+        stacked_bar:
+          metrics_view: anomalies_metrics
+          title: "Anomalies by severity over time"
+          dimension_filters: has_anomaly IN (true)
+          color:
+            field: anomaly_severity
+            type: nominal
+            limit: 10
+            legendOrientation: top
+          x:
+            field: day
+            type: temporal
+            limit: 60
+          y:
+            field: total_anomalies
+            type: quantitative
+            zeroBasedOrigin: true
+
+  - height: 440px
+    items:
+      - width: 12
+        table:
+          metrics_view: anomalies_metrics
+          title: "Recent anomalies (by day and station)"
+          description: "Latest days with anomalies, including severity and pollutant context."
+          dimension_filters: has_anomaly IN (true)
+          columns:
+            - day
+            - station
+            - anomaly_severity
+            - primary_pollutant
+            - total_anomalies
+            - anomaly_rate
+            - max_zscore_recorded
+            - avg_pm10_zscore
+            - avg_pm25_zscore

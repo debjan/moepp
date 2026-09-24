@@ -1,0 +1,128 @@
+# Daily Average Metrics View
+# Provides aggregated daily metrics for station comparison dashboard
+
+version: 1
+type: metrics_view
+title: Daily Average Metrics
+model: daily_avg
+
+timeseries: day
+smallest_time_grain: day
+
+measures:
+  - name: avg_pm10
+    display_name: Avg PM10
+    expression: AVG(avg_pm10)
+    format_preset: humanize
+
+  - name: min_pm10
+    display_name: Min PM10
+    expression: MIN(min_pm10)
+    format_preset: humanize
+
+  - name: max_pm10
+    display_name: Max PM10
+    expression: MAX(max_pm10)
+    format_preset: humanize
+
+  - name: avg_pm25
+    display_name: Avg PM2.5
+    expression: AVG(avg_pm25)
+    format_preset: humanize
+
+  - name: min_pm25
+    display_name: Min PM2.5
+    expression: MIN(min_pm25)
+    format_preset: humanize
+
+  - name: max_pm25
+    display_name: Max PM2.5
+    expression: MAX(max_pm25)
+    format_preset: humanize
+
+  - name: avg_no2
+    display_name: Avg NO2
+    expression: AVG(avg_no2)
+    format_preset: humanize
+
+  - name: min_no2
+    display_name: Min NO2
+    expression: MIN(min_no2)
+    format_preset: humanize
+
+  - name: max_no2
+    display_name: Max NO2
+    expression: MAX(max_no2)
+    format_preset: humanize
+
+  - name: avg_so2
+    display_name: Avg SO2
+    expression: AVG(avg_so2)
+    format_preset: humanize
+
+  - name: min_so2
+    display_name: Min SO2
+    expression: MIN(min_so2)
+    format_preset: humanize
+
+  - name: max_so2
+    display_name: Max SO2
+    expression: MAX(max_so2)
+    format_preset: humanize
+
+  - name: avg_co
+    display_name: Avg CO
+    expression: AVG(avg_co)
+    format_preset: humanize
+
+  - name: min_co
+    display_name: Min CO
+    expression: MIN(min_co)
+    format_preset: humanize
+
+  - name: max_co
+    display_name: Max CO
+    expression: MAX(max_co)
+    format_preset: humanize
+
+  - name: avg_o3
+    display_name: Avg O3
+    expression: AVG(avg_o3)
+    format_preset: humanize
+
+  - name: min_o3
+    display_name: Min O3
+    expression: MIN(min_o3)
+    format_preset: humanize
+
+  - name: max_o3
+    display_name: Max O3
+    expression: MAX(max_o3)
+    format_preset: humanize
+
+  - name: data_completeness
+    display_name: Data Completeness
+    expression: AVG(pm10_count) * 100.0 / AVG(record_count)
+    format_preset: percentage
+
+  - name: record_count
+    display_name: Record Count
+    expression: SUM(record_count)
+    format_preset: humanize
+
+dimensions:
+  - name: station
+    display_name: Station
+    column: station_name_en
+
+  - name: region
+    display_name: Region
+    column: region
+
+  - name: day
+    display_name: Day
+    column: day
+
+  - name: incomplete_data
+    display_name: Incomplete Data
+    column: incomplete_data

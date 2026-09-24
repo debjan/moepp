@@ -1,0 +1,35 @@
+# Air Quality Index Dashboard
+# Displays AQI categories, health advisories, and distribution analysis
+
+type: explore
+title: Air Quality Index
+description: AQI categorization, health advisories, and air quality distribution analysis
+
+metrics_view: aqi_metrics
+
+# Show all AQI-related dimensions and measures
+dimensions: '*'
+measures: '*'
+
+# Default view settings
+defaults:
+  measures:
+    - good_days_pct
+    - poor_or_worse_pct
+    - good_days_count
+    - moderate_days_count
+    - poor_days_count
+  dimensions:
+    - aqi_category
+    - station
+    - health_advisory
+  time_range: P30D
+
+# Time range presets
+time_ranges:
+  - PT6H
+  - P1D
+  - P7D
+  - P30D
+  - P90D
+  - P1Y

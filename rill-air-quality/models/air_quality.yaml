@@ -1,0 +1,16 @@
+type: model
+connector: duckdb
+materialize: true
+incremental: true
+timeout: 30m
+pre_exec: ATTACH IF NOT EXISTS 'ducklake:https://pub-0da5a41a19a943ef839e9968acea4596.r2.dev/ducklake/metadata.ducklake' AS lake (DATA_PATH 'https://pub-0da5a41a19a943ef839e9968acea4596.r2.dev/ducklake/data/', OVERRIDE_DATA_PATH true, READ_ONLY)
+sql: |
+  SELECT date, station_name_en, pm10, pm25, no2, so2, co, o3
+  FROM lake.main.measurements
+  {{ if incremental }}
+  WHERE date > CAST('{{ .state.max_date }}' AS TIMESTAMP)
+  {{ end }}
+  ORDER BY date DESC
+post_exec: DETACH DATABASE IF EXISTS lake
+state:
+  sql: SELECT MAX(date) AS max_date FROM air_quality

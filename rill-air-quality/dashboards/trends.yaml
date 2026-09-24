@@ -1,0 +1,51 @@
+# Trends Analysis Dashboard
+# Year-over-year comparisons, seasonal patterns, and long-term trend analysis
+# Uses monthly_summary_metrics view for monthly aggregated data
+
+type: explore
+title: Trends Analysis
+description: Long-term trend analysis with year-over-year comparisons, seasonal patterns, standard deviation analysis, and anomaly detection
+metrics_view: monthly_summary_metrics
+
+# Explicit measures for trend analysis
+measures:
+  # Averages for trends
+  - avg_pm10
+  - avg_pm25
+  - avg_no2
+  - avg_so2
+  - avg_co
+  - avg_o3
+  # Extreme values
+  - max_pm10
+  - max_pm25
+  # Variability analysis
+  - stddev_pm10
+  - stddev_pm25
+  # Data quality
+  - pm10_completeness
+  - total_records
+
+# Explicit dimensions
+dimensions:
+  - year                 # Year selector for YoY comparison
+  - month_num            # Month for seasonal analysis
+  - station              # Station filter
+
+# Time range presets - longer periods for trends
+time_ranges:
+  - P1Y                  # Last year
+  - P2Y                  # Last 2 years
+  - P5Y                  # Last 5 years
+  - P10Y                 # Last 10 years (all data: 2007-2026)
+
+# Default view - show long-term PM10 trends
+defaults:
+  measures:
+    - avg_pm10
+    - stddev_pm10
+    - max_pm10
+  dimensions:
+    - year
+    - month_num
+  time_range: P5Y       # Default to 5 years for trend visibility

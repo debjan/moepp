@@ -1,0 +1,86 @@
+# Air Quality Metrics View (Hourly Raw Data)
+# Provides metrics for the overview dashboard with real-time measurements
+
+version: 1
+type: metrics_view
+title: Air Quality Metrics
+model: air_quality
+
+timeseries: date
+smallest_time_grain: hour
+
+measures:
+  - name: current_pm10
+    display_name: Current PM10
+    expression: ARG_MAX(pm10, date)
+    format_preset: humanize
+
+  - name: avg_pm10_24h
+    display_name: 24h Avg PM10
+    expression: AVG(pm10)
+    format_preset: humanize
+
+  - name: current_pm25
+    display_name: Current PM2.5
+    expression: ARG_MAX(pm25, date)
+    format_preset: humanize
+
+  - name: avg_pm25_24h
+    display_name: 24h Avg PM2.5
+    expression: AVG(pm25)
+    format_preset: humanize
+
+  - name: current_no2
+    display_name: Current NO2
+    expression: ARG_MAX(no2, date)
+    format_preset: humanize
+
+  - name: current_o3
+    display_name: Current O3
+    expression: ARG_MAX(o3, date)
+    format_preset: humanize
+
+  - name: current_so2
+    display_name: Current SO2
+    expression: ARG_MAX(so2, date)
+    format_preset: humanize
+
+  - name: current_co
+    display_name: Current CO
+    expression: ARG_MAX(co, date)
+    format_preset: humanize
+
+  - name: avg_pm10
+    display_name: Avg PM10
+    expression: AVG(pm10)
+    format_preset: humanize
+
+  - name: avg_pm25
+    display_name: Avg PM2.5
+    expression: AVG(pm25)
+    format_preset: humanize
+
+  - name: avg_no2
+    display_name: Avg NO2
+    expression: AVG(no2)
+    format_preset: humanize
+
+  - name: avg_so2
+    display_name: Avg SO2
+    expression: AVG(so2)
+    format_preset: humanize
+
+  - name: avg_co
+    display_name: Avg CO
+    expression: AVG(co)
+    format_preset: humanize
+
+  - name: avg_o3
+    display_name: Avg O3
+    expression: AVG(o3)
+    format_preset: humanize
+
+dimensions:
+  - name: station
+    display_name: Station
+    column: station_name_en

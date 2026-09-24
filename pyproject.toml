@@ -1,0 +1,29 @@
+[project]
+name = "moepp"
+version = "0.1.0"
+description = "dlt pipeline for MOEPP air quality data ingestion"
+requires-python = ">=3.10"
+dependencies = [
+    "dlt[duckdb,parquet]>=0.4.0",
+    "boto3>=1.43.98",
+    "dotenv",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-cov>=4.0.0",
+]
+
+[tool.ty.environment]
+python = "./.venv"
+extra-paths = [".", "./src"]
+
+[tool.pytest.ini_options]
+pythonpath = "."
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = ["-p no:warnings"]
