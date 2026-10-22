@@ -5,6 +5,7 @@ description = "dlt pipeline for MOEPP air quality data ingestion"
 requires-python = ">=3.10"
 dependencies = [
     "dlt[duckdb,parquet]>=0.4.0",
+    "duckdb>=1.5.5,<2",
     "boto3>=1.43.98",
     "dotenv",
     "pyarrow<26.0.0",
